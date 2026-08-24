@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Job Form</title>
+
+</head>
+
+<body>
+
+    <h1 th:if="${job.id == null}">
+        Add New Job
+    </h1>
+
+    <h1 th:if="${job.id != null}">
+        Edit Job
+    </h1>
+
+    <form th:action="@{/admin/jobs/save}"
+          th:object="${job}"
+          method="post">
+
+        <input type="hidden"
+               th:field="*{id}">
+
+        <label>Job Title:</label>
+
+        <input type="text"
+               th:field="*{title}"
+               required>
+
+        <br><br>
+
+        <label>Description:</label>
+
+        <br>
+
+        <textarea th:field="*{description}"
+                  rows="5"
+                  cols="50"
+                  required>
+        </textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Save Job
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/admin/jobs">
+        Back to Jobs
+    </a>
+
+</body>
+
+</html>

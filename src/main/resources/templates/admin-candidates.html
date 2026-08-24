@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin - Candidates</title>
+
+</head>
+
+<body>
+
+    <h1>Candidate Applications</h1>
+
+    <!-- FILTER SECTION -->
+
+    <h2>Filter Candidates</h2>
+
+    <form action="/admin/candidates" method="get">
+
+        <label>Job:</label>
+
+        <select name="jobId">
+
+            <option value="">All Jobs</option>
+
+            <option th:each="job : ${jobs}"
+                    th:value="${job.id}"
+                    th:text="${job.title}"
+                    th:selected="${selectedJobId != null and selectedJobId == job.id}">
+            </option>
+
+        </select>
+
+        &nbsp;&nbsp;
+
+        <label>Stage:</label>
+
+        <select name="status">
+
+            <option value="ALL">All Stages</option>
+
+            <option value="Applied"
+                    th:selected="${selectedStatus == 'Applied'}">
+                Applied
+            </option>
+
+            <option value="Reject"
+                    th:selected="${selectedStatus == 'Reject'}">
+                Reject
+            </option>
+
+            <option value="R1"
+                    th:selected="${selectedStatus == 'R1'}">
+                R1
+            </option>
+
+            <option value="R1 Reject"
+                    th:selected="${selectedStatus == 'R1 Reject'}">
+                R1 Reject
+            </option>
+
+            <option value="R2"
+                    th:selected="${selectedStatus == 'R2'}">
+                R2
+            </option>
+
+            <option value="R2 Reject"
+                    th:selected="${selectedStatus == 'R2 Reject'}">
+                R2 Reject
+            </option>
+
+            <option value="R3"
+                    th:selected="${selectedStatus == 'R3'}">
+                R3
+            </option>
+
+            <option value="R3 Reject"
+                    th:selected="${selectedStatus == 'R3 Reject'}">
+                R3 Reject
+            </option>
+
+            <option value="Approved"
+                    th:selected="${selectedStatus == 'Approved'}">
+                Approved
+            </option>
+
+        </select>
+
+        &nbsp;&nbsp;
+
+        <button type="submit">
+            Filter
+        </button>
+
+        &nbsp;
+
+        <a href="/admin/candidates">
+            Clear Filters
+        </a>
+
+    </form>
+
+    <br><br>
+
+    <!-- CANDIDATE TABLE -->
+
+    <table border="1"
+           cellpadding="8"
+           cellspacing="0">
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Name</th>
+
+                <th>Email</th>
+
+                <th>Phone</th>
+
+                <th>Job</th>
+
+                <th>Brief Note</th>
+
+                <th>Resume</th>
+
+                <th>Current Stage</th>
+
+                <th>Change Stage</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr th:each="candidate : ${candidates}">
+
+                <td th:text="${candidate.id}">
+                </td>
+
+                <td th:text="${candidate.name}">
+                </td>
+
+                <td th:text="${candidate.email}">
+                </td>
+
+                <td th:text="${candidate.phone}">
+                </td>
+
+                <td th:text="${candidate.job != null ? candidate.job.title : 'N/A'}">
+                </td>
+
+                <td th:text="${candidate.briefNote}">
+                </td>
+
+                <td>
+
+                    <span th:if="${candidate.resumeUrl == null}">
+                        No Resume
+                    </span>
+
+                    <a th:if="${candidate.resumeUrl != null}"
+                       th:href="${candidate.resumeUrl}"
+                       target="_blank">
+                        View Resume
+                    </a>
+
+                </td>
+
+                <td>
+
+                    <strong th:text="${candidate.status}">
+                    </strong>
+
+                </td>
+
+                <td>
+
+                    <form action="/admin/candidates/status"
+                          method="post">
+
+                        <input type="hidden"
+                               name="candidateId"
+                               th:value="${candidate.id}">
+
+                        <select name="status">
+
+                            <option value="Applied"
+                                    th:selected="${candidate.status == 'Applied'}">
+                                Applied
+                            </option>
+
+                            <option value="Reject"
+                                    th:selected="${candidate.status == 'Reject'}">
+                                Reject
+                            </option>
+
+                            <option value="R1"
+                                    th:selected="${candidate.status == 'R1'}">
+                                R1
+                            </option>
+
+                            <option value="R1 Reject"
+                                    th:selected="${candidate.status == 'R1 Reject'}">
+                                R1 Reject
+                            </option>
+
+                            <option value="R2"
+                                    th:selected="${candidate.status == 'R2'}">
+                                R2
+                            </option>
+
+                            <option value="R2 Reject"
+                                    th:selected="${candidate.status == 'R2 Reject'}">
+                                R2 Reject
+                            </option>
+
+                            <option value="R3"
+                                    th:selected="${candidate.status == 'R3'}">
+                                R3
+                            </option>
+
+                            <option value="R3 Reject"
+                                    th:selected="${candidate.status == 'R3 Reject'}">
+                                R3 Reject
+                            </option>
+
+                            <option value="Approved"
+                                    th:selected="${candidate.status == 'Approved'}">
+                                Approved
+                            </option>
+
+                        </select>
+
+                        <button type="submit">
+                            Update
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(candidates)}">
+
+                <td colspan="9">
+                    No candidates found.
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <a href="/admin/dashboard">
+        Back to Dashboard
+    </a>
+
+</body>
+
+</html>

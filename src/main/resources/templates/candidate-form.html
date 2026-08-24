@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Job</title>
+</head>
+
+<body>
+
+    <h1>Apply for Job</h1>
+
+    <form th:action="@{/candidates/save}"
+          th:object="${candidate}"
+          method="post"
+          enctype="multipart/form-data">
+
+        <label>Name:</label>
+        <input type="text" th:field="*{name}" required>
+
+        <br><br>
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" required>
+
+        <br><br>
+
+        <label>Phone:</label>
+        <input type="text" th:field="*{phone}" required>
+
+        <br><br>
+
+        <label>Job:</label>
+
+        <select name="job" required>
+
+            <option value="">-- Select Job --</option>
+
+            <option th:each="job : ${jobs}"
+                    th:value="${job.id}"
+                    th:text="${job.title}">
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <label>Resume:</label>
+
+        <input type="file"
+               name="resumeFile"
+               accept=".pdf,.doc,.docx"
+               required>
+
+        <br><br>
+
+        <label>Brief Note:</label>
+
+        <br>
+
+        <textarea th:field="*{briefNote}"
+                  rows="5"
+                  cols="40"
+                  placeholder="Write a brief note"
+                  required>
+        </textarea>
+
+        <br><br>
+
+        <button type="submit">Submit Application</button>
+
+    </form>
+
+    <br>
+
+    <a th:href="@{/}">Back to Home</a>
+
+</body>
+
+</html>
